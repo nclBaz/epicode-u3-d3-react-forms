@@ -45,11 +45,68 @@ class ReservationForm extends Component {
     })
   }
 
+  handleSubmit = async event => {
+    // event is the form submission event, your function will get it automatically!
+    // Default behaviour of browsers is to reload the page during submit of forms
+    // To prevent that we could use the method event.preventDefault()
+    event.preventDefault()
+
+    // I don't need to collect one by one the values from the form components! I already have all of them saved in the state!
+    console.log(this.state)
+
+    // ******************** FETCH *************************
+    // HTTP Requests they need to be asynchronous operations --> Promises
+    // There are mainly 2 ways to deal with Promises
+    /* 1. Chain with the .then() method
+      fetch(url).then( response => console.log(response)).catch(error => console.log(error))
+   
+      2. Async/Await (preferrable choice)
+      try {
+        const response = await fetch(url)
+        console.log(response)
+      } catch(error) {
+        console.log(error)
+      }
+      */
+    try {
+      const url = "https://striveschool-api.herokuapp.com/api/reservation"
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(this.state.reservation),
+      })
+
+      if (response.ok) {
+        alert("Reservation saved!")
+        // clean the form
+        this.setState({
+          reservation: {
+            name: "",
+            phone: "",
+            numberOfPeople: 1,
+            dateTime: "",
+            smoking: false,
+            specialRequests: "",
+          },
+        })
+      } else {
+        // we are getting a response error from the server
+        const { message } = await response.json()
+        alert(message)
+      }
+    } catch (error) {
+      console.log(error)
+      alert("An error occurred!")
+    }
+  }
+
   render() {
     return (
       <div>
         <h2>Book your table here!</h2>
-        <Form>
+        <Form onSubmit={this.handleSubmit}>
           <Form.Group>
             <Form.Label>What's your name?</Form.Label>
             <Form.Control
