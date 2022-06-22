@@ -22,6 +22,29 @@ class ReservationForm extends Component {
     },
   }
 
+  handleChange = (propertyToSet, valueToSet) => {
+    // In JS I can access to object properties in two ways:
+
+    // const myObject = {
+    //   name: "whatever"
+    // }
+
+    //1 --> myObject.name
+
+    //2 --> myObject["name"]
+
+    // The square brackets notation it is very rarely used, we pretty much always use the dot notation, but sometimes thinkink about objects with the square notation is useful
+    // The problem here comes from the fact that object properties cannot take directly their names out of function parameters
+    // In order to use a string coming as a parameter as object property name, you need to EVALUATE that by putting it into []! That will take the value of that parameter (not its name propertyToSet!) and use it as the property name
+
+    this.setState({
+      reservation: {
+        ...this.state.reservation,
+        [propertyToSet]: valueToSet,
+      },
+    })
+  }
+
   render() {
     return (
       <div>
@@ -38,7 +61,9 @@ class ReservationForm extends Component {
                 // this.setState() it's an overwriting process! But we would like to do it as a merging process by overwriting not the entire state but
                 // just the property that we specify
 
-                this.setState({ reservation: { ...this.state.reservation, name: event.target.value } })
+                // this.setState({ reservation: { ...this.state.reservation, name: event.target.value } })
+
+                this.handleChange("name", event.target.value)
               }}
             />
           </Form.Group>
@@ -54,12 +79,14 @@ class ReservationForm extends Component {
                 // Otherwise I am going to lose all the properties who are not the one I'm trying to modify
                 // Therefore I shall use the SPREAD OPERATOR to take and copy all the current properties to the new object
                 // and only AFTER that I am going to pass the property I want to modify
-                this.setState({
-                  reservation: {
-                    ...this.state.reservation,
-                    phone: event.target.value,
-                  },
-                })
+                // this.setState({
+                //   reservation: {
+                //     ...this.state.reservation,
+                //     phone: event.target.value,
+                //   },
+                // })
+
+                this.handleChange("phone", event.target.value)
               }}
             />
           </Form.Group>
@@ -69,12 +96,7 @@ class ReservationForm extends Component {
               as="select"
               value={this.state.reservation.numberOfPeople}
               onChange={event => {
-                this.setState({
-                  reservation: {
-                    ...this.state.reservation,
-                    numberOfPeople: event.target.value,
-                  },
-                })
+                this.handleChange("numberOfPeople", event.target.value)
               }}
             >
               <option>1</option>
@@ -91,12 +113,7 @@ class ReservationForm extends Component {
               type="datetime-local"
               value={this.state.reservation.dateTime}
               onChange={event => {
-                this.setState({
-                  reservation: {
-                    ...this.state.reservation,
-                    dateTime: event.target.value,
-                  },
-                })
+                this.handleChange("dateTime", event.target.value)
               }}
             ></Form.Control>
           </Form.Group>
@@ -107,12 +124,7 @@ class ReservationForm extends Component {
               label="Do you smoke?"
               checked={this.state.reservation.smoking}
               onChange={event => {
-                this.setState({
-                  reservation: {
-                    ...this.state.reservation,
-                    smoking: event.target.checked,
-                  },
-                })
+                this.handleChange("smoking", event.target.checked)
               }}
             />
           </Form.Group>
@@ -123,12 +135,7 @@ class ReservationForm extends Component {
               rows={3}
               value={this.state.reservation.specialRequests}
               onChange={event => {
-                this.setState({
-                  reservation: {
-                    ...this.state.reservation,
-                    specialRequests: event.target.value,
-                  },
-                })
+                this.handleChange("specialRequests", event.target.value)
               }}
             ></Form.Control>
           </Form.Group>
