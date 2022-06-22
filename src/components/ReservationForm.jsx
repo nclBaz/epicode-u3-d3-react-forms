@@ -37,7 +37,8 @@ class ReservationForm extends Component {
                 console.log(event.target.value)
                 // this.setState() it's an overwriting process! But we would like to do it as a merging process by overwriting not the entire state but
                 // just the property that we specify
-                this.setState({ reservation: { name: event.target.value } })
+
+                this.setState({ reservation: { ...this.state.reservation, name: event.target.value } })
               }}
             />
           </Form.Group>
@@ -47,8 +48,18 @@ class ReservationForm extends Component {
               type="text"
               placeholder="Insert your phone here!"
               value={this.state.reservation.phone}
-              onChange={() => {
-                console.log("change")
+              onChange={event => {
+                // I'd like to remember also the OTHER existing values!
+                // I have to set the new reservation object starting from what I already have in the state!
+                // Otherwise I am going to lose all the properties who are not the one I'm trying to modify
+                // Therefore I shall use the SPREAD OPERATOR to take and copy all the current properties to the new object
+                // and only AFTER that I am going to pass the property I want to modify
+                this.setState({
+                  reservation: {
+                    ...this.state.reservation,
+                    phone: event.target.value,
+                  },
+                })
               }}
             />
           </Form.Group>
@@ -57,8 +68,13 @@ class ReservationForm extends Component {
             <Form.Control
               as="select"
               value={this.state.reservation.numberOfPeople}
-              onChange={() => {
-                console.log("change")
+              onChange={event => {
+                this.setState({
+                  reservation: {
+                    ...this.state.reservation,
+                    numberOfPeople: event.target.value,
+                  },
+                })
               }}
             >
               <option>1</option>
@@ -74,8 +90,13 @@ class ReservationForm extends Component {
             <Form.Control
               type="datetime-local"
               value={this.state.reservation.dateTime}
-              onChange={() => {
-                console.log("change")
+              onChange={event => {
+                this.setState({
+                  reservation: {
+                    ...this.state.reservation,
+                    dateTime: event.target.value,
+                  },
+                })
               }}
             ></Form.Control>
           </Form.Group>
@@ -85,8 +106,13 @@ class ReservationForm extends Component {
               type="checkbox"
               label="Do you smoke?"
               checked={this.state.reservation.smoking}
-              onChange={() => {
-                console.log("change")
+              onChange={event => {
+                this.setState({
+                  reservation: {
+                    ...this.state.reservation,
+                    smoking: event.target.checked,
+                  },
+                })
               }}
             />
           </Form.Group>
@@ -96,8 +122,13 @@ class ReservationForm extends Component {
               as="textarea"
               rows={3}
               value={this.state.reservation.specialRequests}
-              onChange={() => {
-                console.log("change")
+              onChange={event => {
+                this.setState({
+                  reservation: {
+                    ...this.state.reservation,
+                    specialRequests: event.target.value,
+                  },
+                })
               }}
             ></Form.Control>
           </Form.Group>
