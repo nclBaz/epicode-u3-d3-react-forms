@@ -3,6 +3,7 @@
 import { Component } from "react"
 import { Container, Row, Col, Carousel, ListGroup } from "react-bootstrap"
 import pastasArray from "../data/menu.json"
+import ReservationForm from "./ReservationForm"
 
 class Home extends Component {
   state = {
@@ -13,6 +14,11 @@ class Home extends Component {
   render() {
     return (
       <Container>
+        <Row className="justify-content-center mt-3">
+          <Col xs={12} md={6}>
+            <ReservationForm />
+          </Col>
+        </Row>
         <Row className="justify-content-center mt-3">
           {/* <Col className="col col-xs-12 col-md-6"></Col> */}
           <Col xs={12} md={6}>
